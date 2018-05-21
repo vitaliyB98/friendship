@@ -1,0 +1,19 @@
+add friend ship entities:
+  title: 'Create new Friend ship entities'
+
+administer friend ship entities:
+  title: 'Administer Friend ship entities'
+  description: 'Allow to access the administration form to configure Friend ship entities.'
+  restrict access: true
+
+delete friend ship entities:
+  title: 'Delete Friend ship entities'
+
+edit friend ship entities:
+  title: 'Edit Friend ship entities'
+
+view published friend ship entities:
+  title: 'View published Friend ship entities'
+
+view unpublished friend ship entities:
+  title: 'View unpublished Friend ship entities'

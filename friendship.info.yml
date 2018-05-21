@@ -1,0 +1,5 @@
+name: 'Friendship'
+type: module
+description: 'Friends ship'
+core: 8.x
+package: 'Friendship'

@@ -1,0 +1,22 @@
+# Friend ship routing definition
+friend_ship.settings_tab:
+  route_name: friend_ship.settings
+  title: 'Settings'
+  base_route: friend_ship.settings
+
+entity.friend_ship.canonical:
+  route_name: entity.friend_ship.canonical
+  base_route: entity.friend_ship.canonical
+  title: 'View'
+
+entity.friend_ship.edit_form:
+  route_name: entity.friend_ship.edit_form
+  base_route: entity.friend_ship.canonical
+  title: 'Edit'
+
+entity.friend_ship.delete_form:
+  route_name:  entity.friend_ship.delete_form
+  base_route:  entity.friend_ship.canonical
+  title: Delete
+  weight: 10
+
