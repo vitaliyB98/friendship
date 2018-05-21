@@ -1,5 +1,0 @@
-entity.friend_ship.add_form:
-  route_name: entity.friend_ship.add_form
-  title: 'Add Friend ship'
-  appears_on:
-    - entity.friend_ship.collection
