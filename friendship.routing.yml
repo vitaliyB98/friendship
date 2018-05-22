@@ -1,0 +1,31 @@
+friendship.follow:
+  path: '/friendship/follow/{uid}'
+  defaults:
+    _controller: '\Drupal\friendship\Controller\FriendshipController::follow'
+    _title: 'Follow user'
+  requirements:
+    _permission: 'access content'
+
+friendship.unfollow:
+  path: '/friendship/unfollow/{uid}'
+  defaults:
+    _controller: '\Drupal\friendship\Controller\FriendshipController::unfollow'
+    _title: 'Unfollow user'
+  requirements:
+    _permission: 'access content'
+
+friendship.accept:
+  path: '/friendship/accept/{uid}'
+  defaults:
+    _controller: '\Drupal\friendship\Controller\FriendshipController::accept'
+    _title: 'Accept user'
+  requirements:
+    _permission: 'access content'
+
+friendship.removeFriend:
+  path: '/friendship/remove_friend/{uid}'
+  defaults:
+    _controller: '\Drupal\friendship\Controller\FriendshipController::removeFriend'
+    _title: 'Remove friend'
+  requirements:
+    _permission: 'access content'
