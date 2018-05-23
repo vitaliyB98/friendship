@@ -54,13 +54,7 @@ class FriendshipController extends ControllerBase {
     $target_user = User::load($uid);
     $this->friendshipService->follow($target_user);
 
-    $response = new AjaxResponse();
-
-    $link_attributes = $this->friendshipService->getLinkAttributes($target_user);
-    $action_url = $link_attributes['#url']->toString();
-    $response->addCommand(new HtmlCommand('#friendship-ajax-link', $link_attributes['#title']));
-    $response->addCommand(new InvokeCommand('#friendship-ajax-link', 'attr', ['href', $action_url]));
-
+    $response = $this->getAjaxResponse($target_user);
     return $response;
   }
 
@@ -75,14 +69,14 @@ class FriendshipController extends ControllerBase {
    */
   public function unfollow($uid) {
     $target_user = User::load($uid);
-    $this->friendshipService->unfollow($target_user);
 
-    $response = new AjaxResponse();
+    if ($this->friendshipService->isRequestSend($target_user)) {
+      $this->friendshipService->unfollow($target_user);
 
-    $response->addCommand(new HtmlCommand('#friendship-ajax-link', 'Some text'));
-    $response->addCommand(new InvokeCommand('#friendship-ajax-link', 'attr', ['href', '#']));
+      return $this->getAjaxResponse($target_user);
+    }
 
-    return $response;
+    return new AjaxResponse();
   }
 
   /**
@@ -96,14 +90,14 @@ class FriendshipController extends ControllerBase {
    */
   public function accept($uid) {
     $target_user = User::load($uid);
-    $this->friendshipService->accept($target_user);
 
-    $response = new AjaxResponse();
+    if ($this->friendshipService->isFollowedYou($target_user)) {
+      $this->friendshipService->accept($target_user);
 
-    $response->addCommand(new HtmlCommand('#friendship-ajax-link', 'Some text'));
-    $response->addCommand(new InvokeCommand('#friendship-ajax-link', 'attr', ['href', '#']));
+      return $this->getAjaxResponse($target_user);
+    }
 
-    return $response;
+    return new AjaxResponse();
   }
 
   /**
@@ -117,12 +111,32 @@ class FriendshipController extends ControllerBase {
    */
   public function removeFriend($uid) {
     $target_user = User::load($uid);
-    $this->friendshipService->removeFriend($target_user);
 
+    if ($this->friendshipService->isFriend($target_user)) {
+      $this->friendshipService->removeFriend($target_user);
+
+      return $this->getAjaxResponse($target_user);
+    }
+
+    return new AjaxResponse();
+  }
+
+  /**
+   * Return ajax response for ajax link.
+   *
+   * @param \Drupal\user\Entity\User $target_user
+   *   User object.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Ajax response for link.
+   */
+  protected function getAjaxResponse(User $target_user) {
     $response = new AjaxResponse();
 
-    $response->addCommand(new HtmlCommand('#friendship-ajax-link', 'Some text'));
-    $response->addCommand(new InvokeCommand('#friendship-ajax-link', 'attr', ['href', '#']));
+    $link_attributes = $this->friendshipService->getLinkAttributes($target_user);
+    $action_url = $link_attributes['#url']->toString();
+    $response->addCommand(new HtmlCommand('#friendship-ajax-link', $link_attributes['#title']));
+    $response->addCommand(new InvokeCommand('#friendship-ajax-link', 'attr', ['href', $action_url]));
 
     return $response;
   }
