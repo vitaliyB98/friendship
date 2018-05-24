@@ -11,10 +11,19 @@ function friendship_views_data_alter(&$data) {
       'label' => t('Friendship'),
       'id' => 'standard',
       'base' => 'friendship',
-      'base field' => 'uid',
+      'base field' => 'requested_uid',
       'relationship field' => 'uid',
     ],
   ];
+
+  $data['users_field_data']['total_friends_number'] = [
+    'title' => t('Total friends number'),
+    'help' => t('Total friends number by user.'),
+    'field' => [
+      'id' => 'total_friends_number',
+    ],
+  ];
+
 }
 
 /**
@@ -47,7 +56,7 @@ function friendship_views_data() {
   ];
 
   $data['friendship']['uid'] = [
-    'title' => t('Current UID'),
+    'title' => t('Current user ID'),
     'help' => t('The current user id.'),
     'field' => [
       'id' => 'numeric',
@@ -72,7 +81,7 @@ function friendship_views_data() {
   ];
 
   $data['friendship']['requested_uid'] = [
-    'title' => t('Requested UID'),
+    'title' => t('Requested user ID'),
     'help' => t('The requested user id.'),
     'field' => [
       'id' => 'numeric',
@@ -93,23 +102,6 @@ function friendship_views_data() {
       'base' => 'users_field_data',
       'base field' => 'uid',
       'relationship field' => 'requested_uid',
-    ],
-  ];
-
-  $data['friendship']['status'] = [
-    'title' => t('Status'),
-    'help' => t('1 if friends, 0 if followers.'),
-    'field' => [
-      'id' => 'numeric',
-    ],
-    'sort' => [
-      'id' => 'standard',
-    ],
-    'filter' => [
-      'id' => 'numeric',
-    ],
-    'argument' => [
-      'id' => 'numeric',
     ],
   ];
 

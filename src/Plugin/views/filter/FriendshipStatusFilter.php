@@ -31,10 +31,6 @@ class FriendshipStatusFilter extends InOperator {
   public function query() {
     if (!empty($this->value) && !in_array('all', $this->value)) {
       parent::query();
-
-      if (isset($this->value['-1'])) {
-        $id = 1;
-      }
     }
   }
 
@@ -53,9 +49,9 @@ class FriendshipStatusFilter extends InOperator {
    */
   public function generateOptions() {
     return [
-      0 => 'follower',
+      -1 => 'follower',
       1 => 'friend',
-      -1 => 'following',
+      0 => 'following',
     ];
   }
 

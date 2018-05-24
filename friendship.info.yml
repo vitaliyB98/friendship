@@ -3,3 +3,6 @@ type: module
 description: 'Friends ship'
 core: 8.x
 package: 'Friendship'
+
+dependencies:
+  - drupal:field_group

@@ -42,16 +42,17 @@ class FriendshipService implements FriendshipInterface {
       ->fields([
         'uid' => $this->currentUser->id(),
         'requested_uid' => $target_user->id(),
+        'status' => 0,
       ])
       ->execute();
 
-/*    $this->connection->insert('friendship')
+    $this->connection->insert('friendship')
       ->fields([
         'uid' => $target_user->id(),
         'requested_uid' => $this->currentUser->id(),
         'status' => -1,
       ])
-      ->execute();*/
+      ->execute();
   }
 
   /**
@@ -61,6 +62,11 @@ class FriendshipService implements FriendshipInterface {
     $this->connection->delete('friendship')
       ->condition('uid', $this->currentUser->id())
       ->condition('requested_uid', $target_user->id())
+      ->execute();
+
+    $this->connection->delete('friendship')
+      ->condition('uid', $target_user->id())
+      ->condition('requested_uid', $this->currentUser->id())
       ->execute();
   }
 
@@ -76,12 +82,12 @@ class FriendshipService implements FriendshipInterface {
       ->condition('requested_uid', $this->currentUser->id())
       ->execute();
 
-    $this->connection->insert('friendship')
+    $this->connection->update('friendship')
       ->fields([
-        'uid' => $this->currentUser->id(),
-        'requested_uid' => $target_user->id(),
         'status' => 1,
       ])
+      ->condition('uid', $this->currentUser->id())
+      ->condition('requested_uid', $target_user->id())
       ->execute();
   }
 
@@ -89,22 +95,20 @@ class FriendshipService implements FriendshipInterface {
    * {@inheritdoc}
    */
   public function removeFriend(User $target_user) {
-    $this->connection->delete('friendship')
+    $this->connection->update('friendship')
+      ->fields([
+        'status' => -1,
+      ])
       ->condition('uid', $this->currentUser->id())
       ->condition('requested_uid', $target_user->id())
       ->execute();
 
-    $this->connection->delete('friendship')
-      ->condition('uid', $target_user->id())
-      ->condition('requested_uid', $this->currentUser->id())
-      ->execute();
-
-    $this->connection->insert('friendship')
+    $this->connection->update('friendship')
       ->fields([
-        'uid' => $target_user->id(),
-        'requested_uid' => $this->currentUser->id(),
         'status' => 0,
       ])
+      ->condition('uid', $target_user->id())
+      ->condition('requested_uid', $this->currentUser->id())
       ->execute();
   }
 
@@ -112,17 +116,16 @@ class FriendshipService implements FriendshipInterface {
    * {@inheritdoc}
    */
   public function isRequestSend(User $target_user) {
-    /** @var \Drupal\Core\Database\Driver\mysql\Select $query */
-    $query = $this->connection->select('friendship', 'fr')
-      ->fields('fr', ['status'])
-      ->condition('fr.uid', $this->currentUser->id())
-      ->condition('fr.requested_uid', $target_user->id());
+    $result = $this->getFriendshipRow($this->currentUser, $target_user);
 
-    $result = $query->execute()->fetchAll();
-
+    // Because if users is friends we have two records.
     // @todo made it more elegance.
     if (isset($result[0]->status) && $result[0]->status == 0) {
-      return TRUE;
+      $result = $this->getFriendshipRow($target_user, $this->currentUser);
+      // @todo made it more elegance.
+      if (isset($result[0]->status) && $result[0]->status == -1) {
+        return TRUE;
+      }
     }
 
     return FALSE;
@@ -151,17 +154,16 @@ class FriendshipService implements FriendshipInterface {
    * {@inheritdoc}
    */
   public function isFollowedYou(User $target_user) {
-    /** @var \Drupal\Core\Database\Driver\mysql\Select $query */
-    $query = $this->connection->select('friendship', 'fr')
-      ->fields('fr', ['status'])
-      ->condition('fr.uid', $target_user->id())
-      ->condition('fr.requested_uid', $this->currentUser->id());
+    $result = $this->getFriendshipRow($this->currentUser, $target_user);
 
-    $result = $query->execute()->fetchAll();
-
+    // Because if users is friends we have two records.
     // @todo made it more elegance.
-    if (isset($result[0]->status) && $result[0]->status == 0) {
-      return TRUE;
+    if (isset($result[0]->status) && $result[0]->status == -1) {
+      $result = $this->getFriendshipRow($target_user, $this->currentUser);
+      // @todo made it more elegance.
+      if (isset($result[0]->status) && $result[0]->status == 0) {
+        return TRUE;
+      }
     }
 
     return FALSE;
