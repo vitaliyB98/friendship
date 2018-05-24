@@ -135,8 +135,10 @@ class FriendshipController extends ControllerBase {
 
     $link_attributes = $this->friendshipService->getLinkAttributes($target_user);
     $action_url = $link_attributes['#url']->toString();
-    $response->addCommand(new HtmlCommand('#friendship-ajax-link', $link_attributes['#title']));
-    $response->addCommand(new InvokeCommand('#friendship-ajax-link', 'attr', ['href', $action_url]));
+
+    $target_user_id = $target_user->id();
+    $response->addCommand(new HtmlCommand('.friendship-ajax-link-' . $target_user_id, $link_attributes['#title']));
+    $response->addCommand(new InvokeCommand('.friendship-ajax-link-' . $target_user_id, 'attr', ['href', $action_url]));
 
     return $response;
   }

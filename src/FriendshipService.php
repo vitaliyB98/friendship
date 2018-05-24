@@ -44,6 +44,14 @@ class FriendshipService implements FriendshipInterface {
         'requested_uid' => $target_user->id(),
       ])
       ->execute();
+
+/*    $this->connection->insert('friendship')
+      ->fields([
+        'uid' => $target_user->id(),
+        'requested_uid' => $this->currentUser->id(),
+        'status' => -1,
+      ])
+      ->execute();*/
   }
 
   /**

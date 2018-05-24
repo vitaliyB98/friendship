@@ -30,7 +30,6 @@ function friendship_schema() {
       'status' => [
         'description' => '',
         'type' => 'int',
-        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
       ],

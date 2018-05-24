@@ -34,8 +34,10 @@ class FriendshipLink extends DsFieldBase implements ContainerFactoryPluginInterf
       $build = [
         '#type' => 'link',
         '#attributes' => [
-          'class' => ['use-ajax'],
-          'id' => 'friendship-ajax-link',
+          'class' => [
+            'use-ajax',
+            'friendship-ajax-link-' . $target_user->id(),
+          ],
         ],
         '#attached' => [
           'library' => [

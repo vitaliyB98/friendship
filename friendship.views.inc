@@ -117,16 +117,17 @@ function friendship_views_data() {
     'title' => t('Friendship action link'),
     'help' => t('Friendship link.'),
     'field' => [
-      'id' => 'process_friend_link',
+      'id' => 'friendship_process_link',
     ],
-    'sort' => [
-      'id' => 'standard',
-    ],
+  ];
+
+  $data['friendship']['friendship_status_filter'] = [
+    'title' => t('Friendship status filter'),
     'filter' => [
-      'id' => 'numeric',
-    ],
-    'argument' => [
-      'id' => 'numeric',
+      'title' => t('Friendship status filter'),
+      'help' => t('Friendship status filter.'),
+      'field' => 'status',
+      'id' => 'friendship_status_filter',
     ],
   ];
 
