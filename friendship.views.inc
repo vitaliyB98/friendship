@@ -34,9 +34,17 @@ function friendship_views_data_alter(&$data) {
 
   $data['users_field_data']['total_following_number'] = [
     'title' => t('Total following number'),
-    'help' => t('Total following number by user.'),
+    'help' => t('Total followers number by user.'),
     'field' => [
       'id' => 'total_following_number',
+    ],
+  ];
+
+  $data['users_field_data']['friendship_process_link'] = [
+    'title' => t('Friendship action link'),
+    'help' => t('Friendship link.'),
+    'field' => [
+      'id' => 'friendship_process_link',
     ],
   ];
 }
@@ -117,14 +125,6 @@ function friendship_views_data() {
       'base' => 'users_field_data',
       'base field' => 'uid',
       'relationship field' => 'requested_uid',
-    ],
-  ];
-
-  $data['friendship']['friendship_process_link'] = [
-    'title' => t('Friendship action link'),
-    'help' => t('Friendship link.'),
-    'field' => [
-      'id' => 'friendship_process_link',
     ],
   ];
 
