@@ -22,37 +22,10 @@ class ProcessFriendLink extends FieldPluginBase {
     /** @var \Drupal\user\Entity\User $target_user */
     $target_user = $values->_entity;
 
-    /** @var \Drupal\user\Entity\User $current_user */
-    $current_user = \Drupal::currentUser();
+    /** @var \Drupal\friendship\FriendshipService $friendship */
+    $friendship = \Drupal::service('friendship.friendship_service');
 
-    $build = [];
-
-    if ($target_user->id() != $current_user->id()) {
-      $friendship = \Drupal::service('friendship.friendship_service');
-
-      $build = [
-        '#type' => 'link',
-        '#attributes' => [
-          'class' => [
-            'use-ajax',
-            'friendship-ajax-link-' . $target_user->id(),
-          ],
-        ],
-        '#attached' => [
-          'library' => [
-            'core/drupal.ajax',
-          ],
-        ],
-        '#cache' => [
-          'max-age' => 0,
-        ],
-      ];
-
-      $link_attributes = $friendship->getLinkAttributes($target_user);
-      $build += $link_attributes;
-    }
-
-    return $build;
+    return $friendship->getProcessLink($target_user);
   }
 
   /**

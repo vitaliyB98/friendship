@@ -58,6 +58,14 @@ interface FriendshipInterface {
   public function isFriend(User $target_user);
 
   /**
+   * Check if user already have some relationship.
+   *
+   * @param \Drupal\user\Entity\User $target_user
+   *   Target user.
+   */
+  public function isHasRelationship(User $target_user);
+
+  /**
    * Check if target user is followed you.
    *
    * @param \Drupal\user\Entity\User $target_user

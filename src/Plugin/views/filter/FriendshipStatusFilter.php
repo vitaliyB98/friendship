@@ -25,8 +25,7 @@ class FriendshipStatusFilter extends InOperator {
   }
 
   /**
-   * Override the query so that no filtering takes place if
-   * the user doesn`t select options.
+   * Override the query if the user doesn`t select options.
    */
   public function query() {
     if (!empty($this->value) && !in_array('all', $this->value)) {
@@ -35,8 +34,7 @@ class FriendshipStatusFilter extends InOperator {
   }
 
   /**
-   * Skip validation if no options have been chosen so we
-   * can use it as non-filter.
+   * Skip validation if no options have been chosen.
    */
   public function validate() {
     if (!empty($this->value) && !in_array('all', $this->value)) {

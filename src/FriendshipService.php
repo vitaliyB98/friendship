@@ -118,7 +118,6 @@ class FriendshipService implements FriendshipInterface {
   public function isRequestSend(User $target_user) {
     $result = $this->getFriendshipRow($this->currentUser, $target_user);
 
-    // Because if users is friends we have two records.
     // @todo made it more elegance.
     if (isset($result[0]->status) && $result[0]->status == 0) {
       $result = $this->getFriendshipRow($target_user, $this->currentUser);
@@ -137,7 +136,6 @@ class FriendshipService implements FriendshipInterface {
   public function isFriend(User $target_user) {
     $result = $this->getFriendshipRow($this->currentUser, $target_user);
 
-    // Because if users is friends we have two records.
     // @todo made it more elegance.
     if (isset($result[0]->status) && $result[0]->status == 1) {
       $result = $this->getFriendshipRow($target_user, $this->currentUser);
@@ -156,12 +154,28 @@ class FriendshipService implements FriendshipInterface {
   public function isFollowedYou(User $target_user) {
     $result = $this->getFriendshipRow($this->currentUser, $target_user);
 
-    // Because if users is friends we have two records.
     // @todo made it more elegance.
     if (isset($result[0]->status) && $result[0]->status == -1) {
       $result = $this->getFriendshipRow($target_user, $this->currentUser);
       // @todo made it more elegance.
       if (isset($result[0]->status) && $result[0]->status == 0) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isHasRelationship(User $target_user) {
+    $result = $this->getFriendshipRow($this->currentUser, $target_user);
+
+    if (empty($result)) {
+      $result = $this->getFriendshipRow($target_user, $this->currentUser);
+
+      if (empty($result)) {
         return TRUE;
       }
     }
@@ -209,6 +223,7 @@ class FriendshipService implements FriendshipInterface {
         '#title' => $config->get('button.unfollow_text'),
         '#url' => Url::fromRoute('friendship.unfollow', [
           'uid' => $target_user->id(),
+          'js' => 'nojs',
         ]),
       ];
     }
@@ -217,6 +232,7 @@ class FriendshipService implements FriendshipInterface {
         '#title' => $config->get('button.accept_text'),
         '#url' => Url::fromRoute('friendship.accept', [
           'uid' => $target_user->id(),
+          'js' => 'nojs',
         ]),
       ];
     }
@@ -225,6 +241,7 @@ class FriendshipService implements FriendshipInterface {
         '#title' => $config->get('button.remove_friend_text'),
         '#url' => Url::fromRoute('friendship.removeFriend', [
           'uid' => $target_user->id(),
+          'js' => 'nojs',
         ]),
       ];
     }
@@ -233,11 +250,60 @@ class FriendshipService implements FriendshipInterface {
         '#title' => $config->get('button.follow_text'),
         '#url' => Url::fromRoute('friendship.follow', [
           'uid' => $target_user->id(),
+          'js' => 'nojs',
         ]),
       ];
     }
 
     return $link_attributes;
+  }
+
+  /**
+   * Render friendship process link.
+   *
+   * @param \Drupal\user\Entity\User $target_user
+   *   Target user.
+   *
+   * @return array
+   *   Array with link.
+   */
+  public function getProcessLink(User $target_user) {
+    /** @var \Drupal\user\Entity\User $current_user */
+    $current_user = \Drupal::currentUser();
+
+    $build = [];
+
+    if ($target_user->id() != $current_user->id() &&
+      $current_user->hasPermission('use friendship workflow') &&
+      $current_user->id() != 0) {
+      $friendship = \Drupal::service('friendship.friendship_service');
+
+      $id_hash = md5($target_user->id() + rand());
+      $build = [
+        '#type' => 'link',
+        '#attributes' => [
+          'class' => [
+            'use-ajax',
+            'friendship-ajax-link-' . $target_user->id(),
+          ],
+          'id' => 'friendship-ajax-link-' . $id_hash,
+        ],
+        '#attached' => [
+          'library' => [
+            'core/drupal.ajax',
+            'friendship/process-link',
+          ],
+        ],
+        '#cache' => [
+          'max-age' => 0,
+        ],
+      ];
+
+      $link_attributes = $friendship->getLinkAttributes($target_user);
+      $build += $link_attributes;
+    }
+
+    return $build;
   }
 
 }

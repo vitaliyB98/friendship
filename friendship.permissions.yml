@@ -1,0 +1,8 @@
+'administer friendship configuration':
+  title: 'Administer friendship configuration'
+  description: 'Access to module admin form'
+  restrict access: true
+
+'use friendship workflow':
+  title: 'Use friendship workflow'
+  description: 'Allow user to add friend and etc.'

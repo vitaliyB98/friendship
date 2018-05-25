@@ -1,34 +1,34 @@
 friendship.follow:
-  path: '/friendship/follow/{uid}'
+  path: '/friendship/{js}/follow/{uid}'
   defaults:
     _controller: '\Drupal\friendship\Controller\FriendshipController::follow'
     _title: 'Follow user'
   requirements:
-    _permission: 'access content'
+    _permission: 'use friendship workflow'
 
 friendship.unfollow:
-  path: '/friendship/unfollow/{uid}'
+  path: '/friendship/{js}/unfollow/{uid}'
   defaults:
     _controller: '\Drupal\friendship\Controller\FriendshipController::unfollow'
     _title: 'Unfollow user'
   requirements:
-    _permission: 'access content'
+    _permission: 'use friendship workflow'
 
 friendship.accept:
-  path: '/friendship/accept/{uid}'
+  path: '/friendship/{js}/accept/{uid}'
   defaults:
     _controller: '\Drupal\friendship\Controller\FriendshipController::accept'
     _title: 'Accept user'
   requirements:
-    _permission: 'access content'
+    _permission: 'use friendship workflow'
 
 friendship.removeFriend:
-  path: '/friendship/remove_friend/{uid}'
+  path: '/friendship/{js}/remove_friend/{uid}'
   defaults:
     _controller: '\Drupal\friendship\Controller\FriendshipController::removeFriend'
     _title: 'Remove friend'
   requirements:
-    _permission: 'access content'
+    _permission: 'use friendship workflow'
 
 friendship.settings:
   path: '/admin/config/people/friendship-settings'
@@ -36,4 +36,4 @@ friendship.settings:
     _form: '\Drupal\friendship\Form\FriendshipSettingsForm'
     _title: 'Friendship settings'
   requirements:
-    _permission: 'access content'
+    _permission: 'administer friendship configuration'
