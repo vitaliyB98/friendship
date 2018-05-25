@@ -10,5 +10,7 @@
     "issues": "https://www.drupal.org/project/issues/friendship",
     "source": "http://cgit.drupalcode.org/friendship"
   },
-  "require": { }
+  "require": {
+    "drupal/ds": "^1.0"
+  }
 }

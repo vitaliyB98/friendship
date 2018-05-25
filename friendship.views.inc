@@ -24,6 +24,21 @@ function friendship_views_data_alter(&$data) {
     ],
   ];
 
+  $data['users_field_data']['total_followers_number'] = [
+    'title' => t('Total followers number'),
+    'help' => t('Total followers number by user.'),
+    'field' => [
+      'id' => 'total_followers_number',
+    ],
+  ];
+
+  $data['users_field_data']['total_following_number'] = [
+    'title' => t('Total following number'),
+    'help' => t('Total following number by user.'),
+    'field' => [
+      'id' => 'total_following_number',
+    ],
+  ];
 }
 
 /**

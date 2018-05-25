@@ -7,13 +7,13 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 
 /**
- * Field handler to friend number field.
+ * Field handler to flag the node type.
  *
  * @ingroup views_field_handlers
  *
- * @ViewsField("total_friends_number")
+ * @ViewsField("total_followers_number")
  */
-class TotalFriendsNumber extends FieldPluginBase {
+class TotalFollowersNumber extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
@@ -23,9 +23,9 @@ class TotalFriendsNumber extends FieldPluginBase {
     $target_user = $values->_entity;
 
     $connection = \Drupal::database();
-    $total_friends_count = $connection->select('friendship', 'fr')
+    $total_followers_count = $connection->select('friendship', 'fr')
       ->condition('fr.uid', $target_user->id())
-      ->condition('fr.status', 1)
+      ->condition('fr.status', -1)
       ->countQuery()
       ->execute()
       ->fetchField();
@@ -33,7 +33,7 @@ class TotalFriendsNumber extends FieldPluginBase {
     $build = [
       '#type' => 'html_tag',
       '#tag' => 'div',
-      '#value' => $total_friends_count,
+      '#value' => $total_followers_count,
     ];
 
     return $build;
