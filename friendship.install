@@ -54,3 +54,11 @@ function friendship_schema() {
 
   return $schema;
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function friendship_uninstall() {
+  \Drupal::configFactory()->getEditable('friendship.settings')->delete();
+  
+}

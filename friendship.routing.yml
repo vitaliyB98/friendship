@@ -29,3 +29,11 @@ friendship.removeFriend:
     _title: 'Remove friend'
   requirements:
     _permission: 'access content'
+
+friendship.settings:
+  path: '/admin/config/people/friendship-settings'
+  defaults:
+    _form: '\Drupal\friendship\Form\FriendshipSettingsForm'
+    _title: 'Friendship settings'
+  requirements:
+    _permission: 'access content'

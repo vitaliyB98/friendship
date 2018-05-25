@@ -202,9 +202,11 @@ class FriendshipService implements FriendshipInterface {
    *   Return link attributes.
    */
   public function getLinkAttributes(User $target_user) {
+    $config = \Drupal::config('friendship.settings');
+
     if ($this->isRequestSend($target_user)) {
       $link_attributes = [
-        '#title' => t('Unfollow'),
+        '#title' => $config->get('button.unfollow_text'),
         '#url' => Url::fromRoute('friendship.unfollow', [
           'uid' => $target_user->id(),
         ]),
@@ -212,7 +214,7 @@ class FriendshipService implements FriendshipInterface {
     }
     elseif ($this->isFollowedYou($target_user)) {
       $link_attributes = [
-        '#title' => t('Accept request'),
+        '#title' => $config->get('button.accept_text'),
         '#url' => Url::fromRoute('friendship.accept', [
           'uid' => $target_user->id(),
         ]),
@@ -220,7 +222,7 @@ class FriendshipService implements FriendshipInterface {
     }
     elseif ($this->isFriend($target_user)) {
       $link_attributes = [
-        '#title' => t('Remove Friends'),
+        '#title' => $config->get('button.remove_friend_text'),
         '#url' => Url::fromRoute('friendship.removeFriend', [
           'uid' => $target_user->id(),
         ]),
@@ -228,7 +230,7 @@ class FriendshipService implements FriendshipInterface {
     }
     else {
       $link_attributes = [
-        '#title' => t('Follow'),
+        '#title' => $config->get('button.follow_text'),
         '#url' => Url::fromRoute('friendship.follow', [
           'uid' => $target_user->id(),
         ]),

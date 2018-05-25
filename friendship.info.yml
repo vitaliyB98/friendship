@@ -1,8 +1,10 @@
 name: 'Friendship'
 type: module
-description: 'Friends ship'
+description: 'Friendship functionality'
 core: 8.x
 package: 'Friendship'
+configure: friendship.settings
 
 dependencies:
-  - drupal:field_group
+  - drupal:ds
+  - drupal:user
