@@ -7,6 +7,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\friendship\FriendshipService;
 use Drupal\friendship\Ajax\RebindLinkCommand;
+use Drupal\friendship\Ajax\OutdateMessageCommand;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -64,12 +65,18 @@ class FriendshipController extends ControllerBase {
             $this->friendshipService->follow($target_user);
             $response = $this->getAjaxResponse($target_user);
           }
+          else {
+            $response = $this->invokeOutdateMessage();
+          }
           break;
 
         case 'unfollow':
           if ($this->friendshipService->isRequestSend($target_user)) {
             $this->friendshipService->unfollow($target_user);
             $response = $this->getAjaxResponse($target_user);
+          }
+          else {
+            $response = $this->invokeOutdateMessage();
           }
           break;
 
@@ -78,12 +85,18 @@ class FriendshipController extends ControllerBase {
             $this->friendshipService->accept($target_user);
             $response = $this->getAjaxResponse($target_user);
           }
+          else {
+            $response = $this->invokeOutdateMessage();
+          }
           break;
 
         case 'removeFriend':
           if ($this->friendshipService->isFriend($target_user)) {
             $this->friendshipService->removeFriend($target_user);
             $response = $this->getAjaxResponse($target_user);
+          }
+          else {
+            $response = $this->invokeOutdateMessage();
           }
           break;
       }
@@ -173,6 +186,19 @@ class FriendshipController extends ControllerBase {
     $response->addCommand(new RebindLinkCommand($selector, $action_url, $link_attributes['#title']));
 
     return $response;
+  }
+
+  /**
+   * Invoke outdate message.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Ajax response.
+   */
+  protected function invokeOutdateMessage() {
+    $response = new AjaxResponse();
+
+    $response->addCommand(new OutdateMessageCommand());
+    return $response; 
   }
 
 }

@@ -47,4 +47,9 @@
     }
   };
 
+  // Outdate message command.
+  Drupal.AjaxCommands.prototype.outdateMessage = function (ajax, response) {
+    alert('The friendship information is outdate please reload page.');
+  };
+
 })(jQuery, Drupal, drupalSettings);
